@@ -27,7 +27,7 @@ def center_from_faces(matrix):
 
     # iterate over our faces array
     for (x, y, w, h) in faces:
-        print('Face detected at ', x, y, w, h)
+        #print('Face detected at ', x, y, w, h)
         weight += w * h
         x += (x + w / 2) * w * h
         y += (y + h / 2) * w * h
@@ -101,7 +101,7 @@ def auto_resize(image, target_width, target_height):
         p = 2
 
     image = cv2.resize(image, (int(w), int(h)))
-    print("Image resized by", w - width, "*", h - height, "in", p, "pass(es)")
+    #print("Image resized by", w - width, "*", h - height, "in", p, "pass(es)")
 
     return image
 
@@ -111,10 +111,10 @@ def auto_center(matrix):
     center = {'x': 0, 'y': 0}
 
     if not face_center:
-        print('Using Good Feature Tracking method')
+       #print('Using Good Feature Tracking method')
         center = center_from_good_features(matrix)
     else:
-        print('Combining with Good Feature Tracking method')
+        #print('Combining with Good Feature Tracking method')
         features_center = center_from_good_features(matrix)
         face_w = features_center['count'] * COMBINE_FACE_WEIGHT
         feat_w = features_center['count'] * COMBINE_FEATURE_WEIGHT
@@ -122,8 +122,8 @@ def auto_center(matrix):
         center['x'] = (face_center['x'] * face_w + features_center['x'] * feat_w) / t_w
         center['y'] = (face_center['y'] * face_w + features_center['y'] * feat_w) / t_w
 
-        print('Face center', face_center)
-        print('Feat center', features_center)
+        #print('Face center', face_center)
+        #print('Feat center', features_center)
 
     return center
 
@@ -146,11 +146,11 @@ def smart_crop(image, target_width, target_height, destination, do_resize):
     matrix = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
     height, width, depth = original.shape
 
-    if target_height > height:
-        print('Warning: target higher than image')
+    #if target_height > height:
+    #    print('Warning: target higher than image')
 
-    if target_width > width:
-        print('Warning: target wider than image')
+    #if target_width > width:
+    #    print('Warning: target wider than image')
 
     # center = center_from_faces(matrix)
     #
@@ -159,10 +159,10 @@ def smart_crop(image, target_width, target_height, destination, do_resize):
     #     center = center_from_good_features(matrix)
     center = auto_center(matrix)
 
-    print('Found center at', center)
+    #print('Found center at', center)
 
     crop_pos = exact_crop(center, width, height, target_width, target_height)
-    print('Crop rectangle is', crop_pos)
+    print(crop_pos)
 
     cropped = original[int(crop_pos['top']): int(crop_pos['bottom']), int(crop_pos['left']): int(crop_pos['right'])]
     cv2.imwrite(destination, cropped)
