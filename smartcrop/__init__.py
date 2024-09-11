@@ -6,6 +6,13 @@ import argparse
 import os
 import math
 
+from PIL import Image
+
+try:
+    import pillow_avif
+except ImportError:
+    pass
+
 # Algorithm parameters
 COMBINE_FACE_WEIGHT = 10
 COMBINE_FEATURE_WEIGHT = 10
